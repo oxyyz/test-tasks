@@ -38,17 +38,19 @@
               <DocumentTextIcon class="size-5 text-gray-400" />
             </div>
             <div>
-              <p class="text-zinc-800 text-sm">{{ upload.name }}</p>
+              <p class="text-zinc-800 text-sm">
+                {{ upload.name }}
+              </p>
               <p class="text-zinc-700 text-xs">{{ upload.size }}</p>
             </div>
           </div>
           <TrashIcon
-            @click="removeFile(index)"
             class="size-4 text-zinc-700 absolute top-4 right-4 transition-colors duration-200 hover:text-red-500 cursor-pointer"
           />
         </li>
       </ul>
     </div>
+    <pre>{{ uploads }}</pre>
   </div>
 </template>
 
@@ -60,17 +62,39 @@ import {
 } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
+import { useApi } from '@/composables/useApi.ts'
 import { formatFileName, formatFileSize } from '@/utils/formatters.ts'
+
+interface Props {
+  folderName: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  folderName: 'default',
+})
 
 interface IUpload {
   name: string
   progress: number
   previewURL?: string
-  size: number
+  size: number | string
+}
+
+interface IFileResponse {
+  id: number
+  name: string
+  url: string
+}
+
+interface IUploadResponse {
+  code: number
+  content: IFileResponse
 }
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploads = ref<IUpload[]>([])
+
+const $api = useApi()
 
 const triggerFileInput = () => {
   fileInput.value?.click()
@@ -78,12 +102,11 @@ const triggerFileInput = () => {
 
 const handleFileChange = (event: Event) => {
   const files = (event.target as HTMLInputElement).files
-  console.log('files', files)
   if (files) {
-    Array.from(files).forEach((file) => {
+    const filesArray = Array.from(files)
+    filesArray.forEach((file) => {
       const reader = new FileReader()
       reader.onload = (e) => {
-        console.log('File loaded:', file.name)
         uploads.value.push({
           name: formatFileName(file.name),
           progress: 0,
@@ -92,44 +115,34 @@ const handleFileChange = (event: Event) => {
         })
       }
       reader.readAsDataURL(file)
-      uploadFile(file)
     })
+    uploadFiles(filesArray)
   }
 }
 
-const removeFile = (index: number) => {
-  uploads.value.splice(index, 1)
-}
-
-const uploadFile = async (file: File) => {
+const uploadFiles = async (files: File[]) => {
   const formData = new FormData()
-  formData.append('file', file)
 
-  const uploadIndex = uploads.value.findIndex(
-    (upload) => upload.name === file.name,
-  )
-  if (uploadIndex === -1) return
+  files.forEach((file) => {
+    formData.append('file', file)
+  })
+
+  formData.append('fieldName', props.folderName)
 
   try {
-    console.log('Uploading file:', file.name)
-    const response = await fetch('http://localhost:3000/upload', {
-      method: 'POST',
-      body: formData,
+    const response = await $api.$post<IUploadResponse>(
+      '/api/StaticFile/Add',
+      formData,
+    )
+    console.log(response)
+    const result = response.data?.content
+
+    uploads.value.forEach((upload) => {
+      ;(upload.id as any) = result?.id
+      ;(upload.url as any) = result?.url
     })
-
-    if (!response.ok) throw new Error('Upload failed')
-
-    const result = await response.json()
-
-    console.log('Upload result:', result)
-    uploads.value[uploadIndex].progress = 100
-
-    uploads.value[uploadIndex] = {
-      ...uploads.value[uploadIndex],
-      ...result,
-    }
   } catch (e) {
-    console.log(e)
+    console.error(e)
   }
 }
 </script>
