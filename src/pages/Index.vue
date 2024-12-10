@@ -4,6 +4,9 @@
       <Tooltip text="hello 😀">
         <button class="p-2 rounded bg-zinc-800 text-white">Hover me</button>
       </Tooltip>
+      <CustomTooltip position="top">
+        <button class="p-2 rounded bg-zinc-800 text-white">Hover me</button>
+      </CustomTooltip>
     </div>
     <div>
       <FormInput v-model="text" label="Miqdor" class="mb-2" type="number" />
@@ -50,6 +53,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 
+import CustomTooltip from '@/components/CustomTooltip.vue'
 import FormInput from '@/components/Form/Input.vue'
 import Radio from '@/components/Form/Radio.vue'
 import Tooltip from '@/components/Tooltip.vue'

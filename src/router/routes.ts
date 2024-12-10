@@ -6,4 +6,9 @@ export default [
     name: 'Index',
     component: () => import('@/pages/Index.vue'),
   },
+  {
+    path: '/playground',
+    name: 'Playground',
+    component: () => import('@/pages/Playground.vue'),
+  },
 ] as RouteRecordRaw[]
