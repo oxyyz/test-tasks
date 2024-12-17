@@ -47,6 +47,16 @@
       <Radio v-model="radio" name="myRadioGroup" value="1" label="Option 2" />
       <pre>value: {{ radio }}</pre>
     </div>
+    <div class="py-5 flex items-start">
+      <PieChart />
+      <div class="flex flex-col gap-4">
+        <div
+          class="bg-gray-400 rounded-xl w-[320px] h-[80px] animate-pulse"
+          v-for="i in 5"
+          :key="i"
+        ></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,6 +67,7 @@ import CustomTooltip from '@/components/CustomTooltip.vue'
 import FormInput from '@/components/Form/Input.vue'
 import Radio from '@/components/Form/Radio.vue'
 import Tooltip from '@/components/Tooltip.vue'
+import PieChart from '@/components/UI/PieChart.vue'
 const text = ref(0)
 const provider = ref('')
 const radio = ref()

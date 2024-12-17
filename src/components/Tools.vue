@@ -2,10 +2,10 @@
   <section
     class="w-full flex flex-col items-center lg:max-w-none max-w-md mx-auto mb-8 text-white"
   >
-    <h3 class="text-lg font-semibold max-w-nav w-full relative z-10">
-      Apps I like using
-    </h3>
     <div class="lg:w-5/12 w-full">
+      <h3 class="text-lg font-semibold max-w-nav w-full relative z-10">
+        Apps I like using
+      </h3>
       <div class="flex items-center relative">
         <!-- Gradient Blurs -->
         <div
@@ -28,7 +28,6 @@
           <div />
           <div />
         </div>
-
         <!-- Scrolling Icons -->
         <div
           class="w-full inline-flex pt-12 pb-20 flex-nowrap overflow-hidden"
@@ -119,21 +118,21 @@ const tools = ref([
     icon: '/images/apps/app_spotify.jpg',
     link: 'https://apps.apple.com/us/app/spotify-music-and-podcasts/id324684580',
   },
-  // {
-  //   name: 'Finanzguru',
-  //   icon: '/images/apps/app_finanzguru.jpg',
-  //   link: 'https://apps.apple.com/us/app/finanzguru-konten-vertr%C3%A4ge/id1214803607',
-  // },
+  {
+    name: 'Notes',
+    icon: '/images/apps/app_notes.jpg',
+    link: 'https://apps.apple.com/us/app/finanzguru-konten-vertr%C3%A4ge/id1214803607',
+  },
   {
     name: 'Messages',
     icon: '/images/apps/app_messages.jpg',
     link: 'https://apps.apple.com/us/app/messages/id1146560473',
   },
-  // {
-  //   name: 'Cron',
-  //   icon: '/images/apps/app_cron.jpg',
-  //   link: 'https://apps.apple.com/us/app/cron-calendar/id1607562761',
-  // },
+  {
+    name: 'Reddit',
+    icon: '/images/apps/app_reddit.jpg',
+    link: 'https://apps.apple.com/us/app/cron-calendar/id1607562761',
+  },
 ])
 
 const handleIconClick = (link: string) => {
